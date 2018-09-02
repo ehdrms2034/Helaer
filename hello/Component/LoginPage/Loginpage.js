@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
 import {Modal,View,Text,TextInput,Button,StyleSheet} from 'react-native';
+import { inject, observer } from 'mobx-react';
 
-class LoginPage extends Component{
+@inject('mobxStore')
+@observer
+export default class LoginPage extends Component{
 
     state ={
         modalon: false,
@@ -40,8 +43,12 @@ class LoginPage extends Component{
            else{
                res.json().then(user=>{
                if(user.id==null) alert("아이디 or 비밀번호 틀림"); // 아이디 or 비번이 틀린경우
-               else{alert(user.id+"님 접속을 환영합니다.");} // 로그인 성공 // 이제 passport로부터 세션작동 들어감
-            })
+               
+               else{//alert(user.id+"님 접속을 환영합니다.");
+                    this.props.mobxStore.set_name(user.id);
+                    this.props.navigation.navigate("HomeScreen");} // 로그인 성공 // 이제 passport로부터 세션작동 들어감
+                    console.log("로그인 성공");
+                })
         }
     });
 
@@ -49,10 +56,9 @@ class LoginPage extends Component{
 
     render(){
         return(
-
+                
             <View>
-
-            
+                <Text>{this.props.mbox}</Text>
                 <Text> id </Text>
                 <TextInput onChangeText={(text)=>{this.setState({id:text});}}></TextInput>
                 <Text>password</Text>
@@ -69,5 +75,3 @@ class LoginPage extends Component{
     }
 
 }
-
-export default LoginPage;

@@ -12,14 +12,83 @@ import RelayList from './pages/relay_elements/Relay_list';
 import Userprofile from './pages/relay_elements/UserProfile';
 import OffRelayView from './pages/relay_elements/OffRelayView';
 import OnRelayView from './pages/relay_elements/OnRelayView';
+import { observer, inject } from 'mobx-react';
 
+@inject("mobxStore")
+@observer
 export default class Relay extends Component {
   constructor(props) {
     super(props);
     this.state = {
       input_searchRoom: '',
+      
+      isinroom: false,
+      room_relation : [],
+      room_database : [],
     };
   }
+//초기화작업
+  firstSet=()=>{ 
+    
+    fetch("http://220.230.118.245:3000/passport/isuser")
+    .then(res=>{
+      res.json()
+      .then(user=>{
+          this.secondSet(user.id);
+      })
+    })
+
+  }
+
+  secondSet=(id)=>{ //룸_relation 조회
+    fetch("http://220.230.118.245:3000/room_relation/findOne?user_id="+id)
+    .then(res=>{
+      res.json()
+      .then(room_rel=>{
+              if(room_rel) { //룸 조회 성공
+                this.setState({isinroom : true,
+                              room_relation : room_rel});
+                this.props.mobxStore.set_user_relation(room_rel);
+                this.thirdSet(room_rel.room_name);
+              } 
+              else {} //룸 조회 실패
+      });
+    });
+  }
+
+  thirdSet=(roomid)=>{
+    fetch("http://220.230.118.245:3000/room/findOne?room_name="+roomid)
+    .then(res=>{
+        res.json()
+        .then(room=>{
+          
+          if(room){
+           // alert(room.room_name);
+            this.setState({
+            room_database : room
+          });
+          this.props.mobxStore.set_user_roomdatabase(room);
+            //alert(JSON.stringify(room.room_people_list[0].people_id));
+        }
+        })
+
+    })
+  }
+
+  toggle_the_room(){
+    if(this.state.isinroom==false) return <OffRelayView/>
+
+    else{ 
+      return <OnRelayView />
+          }
+  }
+
+  //초기화 작업
+
+  componentWillMount(){
+    this.firstSet();
+  }
+
 
   render() {
     const { navigate } = this.props.navigation;  
@@ -47,8 +116,9 @@ export default class Relay extends Component {
                 <Text style={styles.top_mission_timer_T}>00:00:00:00</Text>
               </View>
             </View>
+            {this.toggle_the_room()}
             {/* <OffRelayView /> */}
-            <OnRelayView />
+            {/*<OffRelayView />*/}
 
           </View>
 
@@ -120,7 +190,7 @@ export default class Relay extends Component {
           </View>
 
 
-          {/* <RelayList /> */}
+          {<RelayList /> }
 
 
 

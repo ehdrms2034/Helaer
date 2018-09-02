@@ -8,10 +8,19 @@ import {
 } from 'react-native';
 
 import Userprofile from './UserProfile';
+import {  inject, observer } from 'mobx-react';
 
-
+@inject("mobxStore")
+@observer
 export default class OnRelay extends Component {
+
+
+
     render() {
+        const {user_roomdatabase} = this.props.mobxStore;
+        const {room_people_list} = this.props.mobxStore.user_roomdatabase;
+        const hi = JSON.stringify(room_people_list);
+        
         return (
             <View style={styles.container}>
                 <View style={styles.title}>
@@ -19,27 +28,26 @@ export default class OnRelay extends Component {
                         <Image style={styles.title_L_image}
                             source={require('../../src/relay_images/icon_myRelay.png')} />
                         <Text style={styles.title_L_T}>
-                            DNA 뚜둔뚜둔
+                            {this.props.mobxStore.user_roomdatabase.room_name} {/*룸네임*/}
               </Text>
                     </View>
 
                     <View style={styles.title_R}>
-                        <Text style={styles.title_R_T_b}>12명</Text>
+                        <Text style={styles.title_R_T_b}>{this.props.mobxStore.user_roomdatabase.room_people} 명</Text>
                         <Text style={styles.title_R_T_r}>과 함께 달리고 있습니다.</Text>
                     </View>
                 </View>
-
                 <View style={styles.contents}>
                     <Userprofile
-                        id="USER 1" />
+                        id="hh" />
                     <Image style={styles.heartArrow}
                         source={require('../../src/relay_images/deco_heartArrow.png')} />
                     <Userprofile
-                        id="USER 1" />
+                        id="gg" />
                     <Image style={styles.heartArrow}
                         source={require('../../src/relay_images/deco_heartArrow.png')} />
                     <Userprofile
-                        id="USER 1" />
+                        id="gg" />
                 </View>
 
                 <View style={styles.bottom}>
