@@ -12,9 +12,51 @@ import Relay from './Relay';
 
 export default class main extends Component {
 
+  state={
+    User_id:'',
+    
+    Lv : 0,
+    
+    
+    User_Nick: '',
+    
+    
+  }
+
   navigationToAbout = () => {
   this.props.navigation.navigate("RelayScreen");
 }
+
+  firstSet=()=>{ 
+    fetch("http://220.230.118.245:3000/passport/isuser")
+    .then(res=>{
+      res.json()
+      .then(user=>{
+          this.SecondSet(user.id);
+      })
+    })
+
+  }
+
+  SecondSet=(id)=>{
+    fetch("http://220.230.118.245:3000/user/findOne?user_id="+id)
+    .then(res=>{
+      res.json()
+      .then(user=>{
+        this.setState({
+          Lv: user.user_level,
+          User_Nick : user.user_name
+
+        })
+      })
+    })
+  }
+
+  componentWillMount(){
+    this.firstSet();
+  }
+
+
   render() {
     const { navigate } = this.props.navigation;  
     return (
@@ -28,9 +70,9 @@ export default class main extends Component {
               <Image source={require('./src/main_images/icon_lv.png')}
                 style={styles.info_me_Lv_image} />
               <View style={styles.info_me_Lv_T}>
-                <Text style={styles.info_me_Lv_T_Lv}>Lv.</Text>
-                <Text style={styles.info_me_Lv_T_LvR}>2</Text>
-                <Text style={styles.info_me_Lv_T_Id}>호야니</Text>
+                <Text style={styles.info_me_Lv_T_Lv}> </Text>
+                <Text style={styles.info_me_Lv_T_LvR}> {this.state.Lv} </Text>
+                <Text style={styles.info_me_Lv_T_Id}>{this.state.User_Nick}</Text>
               </View>
             </View>
             <View style={styles.info_me_Exp}>
@@ -251,10 +293,5 @@ const styles = StyleSheet.create({
 
 });
 
-
-const AppNavigator = StackNavigator({
-  HomeScreen: { screen: main },
-  RelayScreen: { screen: Relay },
-});
 
 AppRegistry.registerComponent('flow', () => AppNavigator);

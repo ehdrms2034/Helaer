@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 2.7,
         shadowOpacity: 0.3,
-        elevation: 5,
+        //elevation: 5,
     },
     item_summary_L_image: {
         flex: 1,
