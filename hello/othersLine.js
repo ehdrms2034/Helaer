@@ -1,5 +1,5 @@
 /**
- * 참여중인 내 라인 상세보기
+ * 다른 팀 라인 상세보기
  */
 
 import React, { Component } from 'react';
@@ -39,41 +39,23 @@ export default class myLine extends Component {
                         <Text style={styles.top_header_T}>상세보기</Text>
                     </View>
 
+                    <DetailRelayView />
+
                     <View style={styles.top}>
                         {/*<Text>현재순위권과 등등 나타내는 부분</Text>*/}
                         <View style={styles.top_mission}>
-
-                            <View style={styles.top_mission_timer}>
-                                <Image source={require('./src/relay_images/icon_clock.png')}
-                                       style={styles.top_mission_timer_image} />
-                                <Text style={styles.top_mission_timer_T}>00:00:00:00</Text>
-                            </View>
-                            <View style={styles.top_mission_box}>
-                                <Text style={styles.top_mission_T}>
-                                    현재 순위권과
-                                    <Text style={{color: '#ad6aef', fontSize:27}}>
-                                        {this.state.number}명
-                                    </Text>
-                                    차이 입니다.
-                                </Text>
-                            </View>
                             <View style={styles.top_mission_title}>
-                                <Text style={styles.top_mission_title_T}>버튼넘기기!</Text>
+                                <Text style={styles.top_mission_title_T}>참여하기</Text>
                             </View>
-
-
                         </View>
-                        {/* <OffRelayView /> */}
-                        <DetailRelayView />
                     </View>
 
                     {/* contents */}
                     <View style={styles.contents}>
-
                         {/* contents - 기여도 list */}
                         <Text style={styles.contents_title}>기여도</Text>
                     </View>
-                     <ListMyRoom />
+                    <ListMyRoom />
                 </View>
             </ScrollView >
         );

@@ -1,4 +1,6 @@
-
+/**
+ * 상세보기의 방 소개 페이지
+ */
 import React, { Component } from 'react';
 import {
     StyleSheet, Text, View,
@@ -11,6 +13,12 @@ import Userprofile from './UserProfile';
 
 
 export default class DetailRelay extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bodyText: '첫 눈에 널 알아보게 돼써 호롤롤롤라레레러러러먀캬컄ㅋ캬캬캬ㅑㅑ캬캬ㅑㅋ',
+        }
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -31,9 +39,12 @@ export default class DetailRelay extends Component {
 
                 <View style={styles.contents}>
                     <View style={styles.intro_box}>
-                        <Text>방 소개</Text>{'\n'}
-                        <Text>첫 눈에 널 알아보게 돼써 호롤롤롤라레레러러러
-                            ㅣ먀캬컄ㅋ캬캬캬ㅑㅑ캬캬ㅑㅋ</Text>
+                        <View style={styles.intro_box_title}>
+                            <Text style={styles.titleText}>방 소개</Text>
+                        </View>
+                        <View style={styles.intro_box_text}>
+                        <Text style={styles.text} numberOfLines={2}>{this.state.bodyText}</Text>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -98,7 +109,7 @@ const styles = StyleSheet.create({
     intro_box: {
         marginTop: 23.5,
         width: deviceWidth - (32.7 * 2), height: 69.3,
-        marginLeft: 32.7, marginRight: 32.7,
+        // marginLeft: 32.7, marginRight: 32.7,
         padding: 5,
         borderColor: '#ad6aef',
         borderWidth: 2,
@@ -106,26 +117,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    intro_box_T_bold: {
-        width: '100%', height: '100%',
-        fontSize: 20.7,
-        fontWeight: 'bold',
-        color: '#000',
-        paddingTop: 3,
+    intro_box_title: {
+        marginLeft: 32.7, marginRight: 32.7,
+        width: '60%',
         alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)'
+        justifyContent: 'center'
     },
-    intro_box_T_normal: {
-        width: '100%', height: '100%',
-        fontSize: 20.7,
-        fontWeight: 'normal',
-        color: '#000',
-        paddingTop: 3,
+    intro_box_text: {
+        width: '100%',
+        paddingTop: 5,
         alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)'
-    }
+        justifyContent: 'center'
+    },
+    titleText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    text: {
+        fontSize: 10,
+        fontWeight: 'normal',
+    },
 });
