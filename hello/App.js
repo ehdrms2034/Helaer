@@ -6,8 +6,6 @@ import {
   TouchableOpacity, Image,
   AppRegistry
 } from 'react-native';
-import { YellowBox } from 'react-native';
-
 
 import { Provider } from "mobx-react";
 import stores from "./mobx/listStore";
@@ -16,8 +14,7 @@ import { createStackNavigator } from 'react-navigation';
 import Relay from './Relay';
 import main from './main';
 import Login from './Component/LoginPage/Loginpage'
-
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module react-navigation']);
+import Barcode from './Component/BarcodeScanner/BarcodeCamera';
 
 
 
@@ -41,6 +38,7 @@ const AppNavigator = createStackNavigator({
     LoginScreen: {screen:Login},
     HomeScreen: { screen: main },
     RelayScreen: { screen: Relay },
+    BarcodeScreen: {screen : Barcode},
     
   },{
     headerMode: "none"
