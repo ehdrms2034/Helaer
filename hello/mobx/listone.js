@@ -3,9 +3,13 @@ import{observable,computed,action} from 'mobx';
 
 class myapp{
     @observable user_name = "";
-    @observable user_roomdatabase = [];
-    @observable user_relation = [];
-
+    @observable roomdatabase = {
+        ...this.roomdatabase,
+        room_people_list : []
+    }
+    @observable relation = [];
+    @observable people_list =[
+    ];
 
 
     @action
@@ -13,12 +17,16 @@ class myapp{
         this.user_name =name;
     }
     @action
-    set_user_roomdatabase= (data)=>{
-        this.user_roomdatabase = data;
+    set_roomdatabase= (data)=>{
+        this.roomdatabase = data;
     }
     @action
-    set_user_relation=(data) =>{
-        this.user_relation = data;
+    set_relation=(data) =>{
+        this.relation = data;
+    }
+    @action
+    set_people_list=(data)=>{
+        this.people_list=data;
     }
 }
 

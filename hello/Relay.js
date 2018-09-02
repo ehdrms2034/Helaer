@@ -15,6 +15,7 @@ import OnRelayView from './pages/relay_elements/OnRelayView';
 import { observer, inject } from 'mobx-react';
 
 @inject("mobxStore")
+@inject('mystate')
 @observer
 export default class Relay extends Component {
   constructor(props) {
@@ -22,72 +23,18 @@ export default class Relay extends Component {
     this.state = {
       input_searchRoom: '',
       
-      isinroom: false,
-      room_relation : [],
-      room_database : [],
     };
   }
 //초기화작업
-  firstSet=()=>{ 
-    
-    fetch("http://220.230.118.245:3000/passport/isuser")
-    .then(res=>{
-      res.json()
-      .then(user=>{
-          this.secondSet(user.id);
-      })
-    })
 
-  }
-
-  secondSet=(id)=>{ //룸_relation 조회
-    fetch("http://220.230.118.245:3000/room_relation/findOne?user_id="+id)
-    .then(res=>{
-      res.json()
-      .then(room_rel=>{
-              if(room_rel) { //룸 조회 성공
-                this.setState({isinroom : true,
-                              room_relation : room_rel});
-                this.props.mobxStore.set_user_relation(room_rel);
-                this.thirdSet(room_rel.room_name);
-              } 
-              else {} //룸 조회 실패
-      });
-    });
-  }
-
-  thirdSet=(roomid)=>{
-    fetch("http://220.230.118.245:3000/room/findOne?room_name="+roomid)
-    .then(res=>{
-        res.json()
-        .then(room=>{
-          
-          if(room){
-           // alert(room.room_name);
-            this.setState({
-            room_database : room
-          });
-          this.props.mobxStore.set_user_roomdatabase(room);
-            //alert(JSON.stringify(room.room_people_list[0].people_id));
-        }
-        })
-
-    })
-  }
 
   toggle_the_room(){
-    if(this.state.isinroom==false) return <OffRelayView/>
-
-    else{ 
-      return <OnRelayView />
-          }
+    if(this.props.mystate.isinroom==false) return <OffRelayView/>
+    else{ return <OnRelayView />}
   }
 
   //초기화 작업
 
-  componentWillMount(){
-    this.firstSet();
-  }
 
 
   render() {
@@ -105,7 +52,7 @@ export default class Relay extends Component {
           <View style={styles.top}>
             <View style={styles.top_mission}>
               <View style={styles.top_mission_box}>
-                <Text style={styles.top_mission_T}> 좋아하는 가수를 응원하자!</Text>
+                <Text style={styles.top_mission_T}> {this.props.mystate.mission.mission_name}</Text>
               </View>
               <View style={styles.top_mission_title}>
                 <Text style={styles.top_mission_title_T}>MISSION</Text>
@@ -113,7 +60,7 @@ export default class Relay extends Component {
               <View style={styles.top_mission_timer}>
                 <Image source={require('./src/relay_images/icon_clock.png')}
                   style={styles.top_mission_timer_image} />
-                <Text style={styles.top_mission_timer_T}>00:00:00:00</Text>
+                <Text style={styles.top_mission_timer_T}>59:23:21:{this.props.mystate.mission_balance_time}</Text>
               </View>
             </View>
             {this.toggle_the_room()}
@@ -131,28 +78,28 @@ export default class Relay extends Component {
               <View style={styles.contents_top3_item2}>
                 <View style={styles.contents_top3_image_box2}>
                   <Image />
-                  <Text style={styles.contents_top3_image_box_T}>26명</Text>
+                  <Text style={styles.contents_top3_image_box_T}>{this.props.mystate.rank[1].room_people}</Text>
                 </View>
 
                 <Image style={styles.contents_top3_medal2}
                   source={require('./src/relay_images/deco_2.png')} />
                 <Text style={styles.contents_top3_T}
                   numberOfLines={1}>
-                  Twice랑 뜌비뜌밥
+                  {this.props.mystate.rank[1].room_name}
               </Text>
               </View>
 
               <View style={styles.contents_top3_item1}>
                 <View style={styles.contents_top3_image_box1}>
                   <Image />
-                  <Text style={styles.contents_top3_image_box_T}>26명</Text>
+                  <Text style={styles.contents_top3_image_box_T}>{this.props.mystate.rank[0].room_people}</Text>
                 </View>
 
                 <Image style={styles.contents_top3_medal1}
                   source={require('./src/relay_images/deco_1.png')} />
                 <Text style={styles.contents_top3_T}
                   numberOfLines={1}>
-                  Twice랑 뜌비뜌밥
+                  {this.props.mystate.rank[0].room_name}
               </Text>
               </View>
 
@@ -160,14 +107,14 @@ export default class Relay extends Component {
 
                 <View style={styles.contents_top3_image_box2}>
                   <Image />
-                  <Text style={styles.contents_top3_image_box_T}>26명</Text>
+                  <Text style={styles.contents_top3_image_box_T}>{this.props.mystate.rank[2].room_people}</Text>
                 </View>
 
                 <Image style={styles.contents_top3_medal2}
                   source={require('./src/relay_images/deco_3.png')} />
                 <Text style={styles.contents_top3_T}
                   numberOfLines={1}>
-                  Twice랑 뜌비뜌밥
+                  {this.props.mystate.rank[2].room_name}
               </Text>
               </View>
             </View>
@@ -365,7 +312,7 @@ const styles = StyleSheet.create({
     width: '100%', height: 92.8,
     resizeMode: 'contain',
     marginBottom: 10.1,
-    elevation: 6
+    //elevation: 6
   },
 
   contents_top3_item2: {
@@ -394,7 +341,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 2.7,
-    elevation: 5
+    //elevation: 5
   },
   contents_top3_T: {
     width: 77.3,

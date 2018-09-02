@@ -17,37 +17,35 @@ export default class OnRelay extends Component {
 
 
     render() {
-        const {user_roomdatabase} = this.props.mobxStore;
-        const {room_people_list} = this.props.mobxStore.user_roomdatabase;
-        const hi = JSON.stringify(room_people_list);
-        
-        return (
+       //const {roomdatabase} =this.props.mobxStore;
+       console.log(this.props.mobxStore.people_list);
+       return (
             <View style={styles.container}>
+            
                 <View style={styles.title}>
                     <View style={styles.title_L}>
                         <Image style={styles.title_L_image}
                             source={require('../../src/relay_images/icon_myRelay.png')} />
                         <Text style={styles.title_L_T}>
-                            {this.props.mobxStore.user_roomdatabase.room_name} {/*룸네임*/}
+                        {this.props.mobxStore.roomdatabase.room_name}
               </Text>
                     </View>
-
                     <View style={styles.title_R}>
-                        <Text style={styles.title_R_T_b}>{this.props.mobxStore.user_roomdatabase.room_people} 명</Text>
+                        <Text style={styles.title_R_T_b}>{this.props.mobxStore.roomdatabase.room_people} 명</Text>
                         <Text style={styles.title_R_T_r}>과 함께 달리고 있습니다.</Text>
                     </View>
                 </View>
                 <View style={styles.contents}>
                     <Userprofile
-                        id="hh" />
+                        id={this.props.mobxStore.roomdatabase.room_people_list[0].people_id} />
                     <Image style={styles.heartArrow}
                         source={require('../../src/relay_images/deco_heartArrow.png')} />
                     <Userprofile
-                        id="gg" />
+                        id="2번째" />
                     <Image style={styles.heartArrow}
                         source={require('../../src/relay_images/deco_heartArrow.png')} />
                     <Userprofile
-                        id="gg" />
+                        id="3번째" />
                 </View>
 
                 <View style={styles.bottom}>

@@ -6,7 +6,11 @@ import {
   ListView, TextInput,
   Modal,
 } from 'react-native';
+import { inject, observer } from 'mobx-react';
 
+@inject('mobxStore')
+@inject('mystate')
+@observer
 export default class OffRelayView extends Component {
 
   constructor(props) {
@@ -15,6 +19,9 @@ export default class OffRelayView extends Component {
       modalVisible: false,
       height: 30,
       modalHeight: 258.3,
+
+      room_name : '',
+      room_intro : '',
     };
   }
 
@@ -28,6 +35,33 @@ export default class OffRelayView extends Component {
       height,
       modalHeight: 258.3 + height
     })
+  }
+
+  make_room_event=()=>{
+    const xhr_room_name = this.state.room_name;
+    const xhr_room_intro = this.state.room_intro;
+    const xhr_room_owner =this.props.mobxStore.user_name;
+    const xhr_http="http://220.230.118.245:3000/room/make"+
+    "?room_name="+xhr_room_name+
+    "&room_owner="+xhr_room_owner+
+    "&room_subject="+xhr_room_intro+
+    "&room_people=1";
+    console.log("방생성 준비");
+
+    fetch(xhr_http).then(
+      res=>res.json()
+      .then(data=>{
+          this.props.mobxStore.set_roomdatabase(data[0]);
+          this.props.mobxStore.set_relation(data[1]);
+          console.log(data[1]);
+          console.log("방 생성 완료");
+          this.props.mystate.set_isinroom(true);
+
+      })
+    )
+
+
+
   }
 
   render() {
@@ -75,29 +109,25 @@ export default class OffRelayView extends Component {
                 <View style={styles.modal_contents}>
                   <Text style={styles.modal_contents_title}>방 제목</Text>
                   <TextInput style={styles.modal_contents_input}
-                    onChangeText={(value) => this.setState({ value })}
+                    onChangeText={(value) => this.setState({ room_name:value })}
                     editable={true}
                     maxLength={15}
-                    value={input_roomTitle}
                     placeholder="15자 이내로 작성해주세요." />
                 </View>
                 <View style={styles.modal_contents}>
-                  <Text style={styles.modal_contents_title}>방 제목</Text>
+                  <Text style={styles.modal_contents_title}>방 소개</Text>
                   <TextInput style={[styles.modal_contents_input, newStyle]}
-                    onChangeText={(value) => this.setState({ value })}
+                    onChangeText={(value) => this.setState({ room_intro:value })}
                     multiline={true}
                     editable={true}
                     maxLength={100}
-                    value={input_roomIntro}
-                    placeholder="15자 이내로 작성해주세요."
+                    placeholder="100자 이내로 작성해주세요."
                     onContentSizeChange={(e) => this.updateSize(e.nativeEvent.contentSize.height + 10)} />
                 </View>
 
                 <View style={styles.modal_btn_box}>
                   <TouchableOpacity style={styles.modal_btn_new}
-                    onPress={() => {
-                      alert('make NEW!!');
-                    }}>
+                    onPress={this.make_room_event}>
                     <Text style={styles.modal_btn_new_T}>
                       새 릴레이 만들기
                         </Text>
