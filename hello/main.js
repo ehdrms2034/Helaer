@@ -9,14 +9,123 @@ import {
 
 import { StackNavigator } from 'react-navigation';
 import Relay from './Relay';
+import { observer,inject } from 'mobx-react';
+import { BarcodeCamera } from './Component/BarcodeScanner/BarcodeCamera'
 
+@inject('mobxStore')
+@inject('mystate')
+@observer
 export default class main extends Component {
+
+  state={
+    User_id:'',
+    
+    Lv : 0,
+    User_Nick: '',
+    
+    barcode:false,
+    
+  }
 
   navigationToAbout = () => {
   this.props.navigation.navigate("RelayScreen");
 }
+
+
+
+  firstSet=()=>{ 
+    fetch("http://220.230.118.245:3000/passport/isuser") //유저정보
+    .then(res=>{
+      res.json()
+      .then(user=>{
+          this.props.mobxStore.set_name(user.id);
+          this.SecondSet(user.id);
+          console.log(user.id);
+        })
+    })
+
+    fetch("http://220.230.118.245:3000/room/rank3") //랭크
+    .then(res=>{
+      res.json().then(
+        res=>{
+          this.props.mystate.set_rank(res);
+          console.log(res);
+        }
+      )
+    })
+
+    fetch("http://220.230.118.245:3000/mission/findOne").then( //미션
+      res=>{
+        res.json().then(
+          res=>{
+            this.props.mystate.set_mission(res[0]);
+            console.log(this.props.mystate.mission);
+          }
+        )
+      }
+    )
+  }
+
+  SecondSet=(id)=>{
+    fetch("http://220.230.118.245:3000/user/findOne?user_id="+id)
+    .then(res=>{
+      res.json()
+      .then(user=>{
+        this.setState({
+          Lv: user.user_level,
+          User_Nick : user.user_name
+        })
+        console.log("2단계:"+id);
+        this.thirdSet(id);
+      })
+    })
+  }
+  
+  thirdSet=(id)=>{ //룸_relation 조회
+    fetch("http://220.230.118.245:3000/room_relation/findOne?user_id="+id)
+    .then(res=>{
+      res.json()
+      .then(room_rel=>{
+        console.log(room_rel)
+              if(room_rel){console.log("진입"); //룸 조회 성공
+                this.setState({room_relation : room_rel});
+                this.props.mobxStore.set_relation(room_rel);
+                this.props.mystate.set_isinroom(true);
+                console.log(this.props.mystate.isinroom);
+                this.fourthSet(room_rel.room_name);
+                
+              } 
+              else {} //룸 조회 실패
+      });
+    });
+  }
+
+  fourthSet=(roomid)=>{
+    fetch("http://220.230.118.245:3000/room/findOne?room_name="+roomid)
+    .then(res=>{
+        res.json()
+        .then(room=>{
+          
+          if(room){
+            this.setState({
+            room_database : room
+          });
+          this.props.mobxStore.set_roomdatabase(room);
+          this.props.mobxStore.set_people_list(room.room_people_list);
+          console.log(this.props.mobxStore.roomdatabase.room_people_list[0].people_id);
+        }
+        })
+
+    })
+  }
+
+  componentWillMount(){
+    this.firstSet();
+  }
+
+
   render() {
-    const { navigate } = this.props.navigation;  
+
     return (
       <View style={styles.container}>
 
@@ -28,9 +137,9 @@ export default class main extends Component {
               <Image source={require('./src/main_images/icon_lv.png')}
                 style={styles.info_me_Lv_image} />
               <View style={styles.info_me_Lv_T}>
-                <Text style={styles.info_me_Lv_T_Lv}>Lv.</Text>
-                <Text style={styles.info_me_Lv_T_LvR}>2</Text>
-                <Text style={styles.info_me_Lv_T_Id}>호야니</Text>
+                <Text style={styles.info_me_Lv_T_Lv}>LV.</Text>
+                <Text style={styles.info_me_Lv_T_LvR}> {this.state.Lv} </Text>
+                <Text style={styles.info_me_Lv_T_Id}>{this.state.User_Nick}</Text>
               </View>
             </View>
             <View style={styles.info_me_Exp}>
@@ -76,14 +185,16 @@ export default class main extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.btn3]}
-            onPress={() => { alert("this is clicked!") }}>
+            onPress={()=>{this.props.navigation.navigate("BarcodeScreen");}}>
             <Image source={require('./src/main_images/btn3_camera.png')}
               style={[styles.image, styles.btn3_image]} />
             <Text style={styles.buttonText}>헌혈인증</Text>
           </TouchableOpacity >
+          
         </View >
-
+        
       </View >
+      
     );
   }
 }
@@ -251,10 +362,5 @@ const styles = StyleSheet.create({
 
 });
 
-
-const AppNavigator = StackNavigator({
-  HomeScreen: { screen: main },
-  RelayScreen: { screen: Relay },
-});
 
 AppRegistry.registerComponent('flow', () => AppNavigator);

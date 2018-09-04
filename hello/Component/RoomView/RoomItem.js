@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import {View,Text,Modal,Image,Button,StyleSheet,TouchableOpacity} from 'react-native';
+import { inject } from 'mobx-react';
+
 
 class RoomItem extends Component{
 

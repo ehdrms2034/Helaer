@@ -1,26 +1,12 @@
 import React,{Component} from 'react';
-import {View,Modal,Text,StyleSheet,Button} from 'react-native';
+import {View,Modal,Text,StyleSheet,Button,TouchableOpacity} from 'react-native';
 import {RNCamera, Barcode} from 'react-native-camera';
 
 class BarcodeCamera extends Component{
 
-    state={
-        modalon:false,
-
+    close_btn=()=>{
+        this.props.navigation.navigate("HomeScreen");
     }
-    openmodal =() =>{
-        this.setState({
-            modalon:true
-        })
-
-    }
-
-    closemodal =() =>{
-        this.setState({
-            modalon:false
-        })
-    }
-
 
 
     render(){
@@ -31,11 +17,6 @@ class BarcodeCamera extends Component{
     
                 <View>
 
-                    <Button title="바코드" onPress={this.openmodal}></Button>
-                    
-                    <Modal onRequestClose={()=>{}}
-                        visible={this.state.modalon}
-                    >
 
                     <RNCamera
                     permissionDialogTitle={'Permission to use camera'}
@@ -52,9 +33,7 @@ class BarcodeCamera extends Component{
 
                     />
 
-                    <Button title="닫기" onPress={this.closemodal}></Button>
-
-                    </Modal>
+                    <Button title="닫기" onPress={this.close_btn}></Button>
 
 
 

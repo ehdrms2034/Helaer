@@ -15,6 +15,13 @@ class RelayList extends Component {
         data: randomUsers(10),
     };
 
+    /* 
+    props ={
+        room-relation : [],
+        room-database : []
+    }
+    */
+
     onEndReached = () => {
         // this.setState(state => ({
         //     data: [
