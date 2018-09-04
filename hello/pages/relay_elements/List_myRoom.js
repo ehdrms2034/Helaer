@@ -65,10 +65,10 @@ class ListMyRoom extends Component {
                                 <View style={styles.item}>
                                     <View style={styles.item_title}>
                                         <View style={styles.item_title_number}>
-                                            <Text style={{fontSize:'20'}}>{item.key}</Text>
+                                            <Text style={{fontSize:20}}>{item.key}</Text>
                                         </View>
                                         <View style={styles.item_title_upDown}>
-                                            <Text style={{fontSize:'20'}}>{item.key}</Text>  {/*그림으로 바꿔야함*/}
+                                            <Text style={{fontSize:20}}>{item.key}</Text>  {/*그림으로 바꿔야함*/}
                                         </View>
                                         <View style={styles.item_title_user_pic}>
                                             <Image style={styles.item_title_user_image}
@@ -76,7 +76,7 @@ class ListMyRoom extends Component {
                                         </View>
                                         <View style={styles.item_title_user_text}>
                                             <View style={{flex:1}}>
-                                                <Text style={{fontStyle:'Italic'}}>Lv.7</Text>   {/*레벨 받아오기*/}
+                                                <Text style={{fontStyle:'italic'}}>Lv.7</Text>   {/*레벨 받아오기*/}
                                             </View>
                                             <View style={{flex:1}}>
                                                 <Text>User1</Text>   {/*id 받아오기*/}
@@ -95,7 +95,7 @@ class ListMyRoom extends Component {
                                         {/*</View>*/}
                                         <Text style={{fontWeight:'bold'}}>
                                             바톤 넘기기
-                                            <Text style={{fontColor:'#ff6443'}}>+{this.state.score}</Text>
+                                            <Text style={{color:'#ff6443'}}>+{this.state.score}</Text>
                                         </Text>
                                     </View>
                                 </View>
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     },
     item_title_user_text: { // user level, id
         flex: 2,
-        alignItems: 'left',
         flexDirection: 'column',
         justifyContent: 'space-between',
     },

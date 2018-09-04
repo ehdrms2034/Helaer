@@ -39,8 +39,14 @@ export default class Relay extends Component {
 
   render() {
     const { navigate } = this.props.navigation;  
+    const {mission_balance_time} = this.props.mystate;
+    const days = Math.floor(mission_balance_time/1000/60/60/24);
+    const hours = Math.floor(((mission_balance_time-days)-1000*60*60*24*days)/1000/60/60);
+    const min = Math.floor(((mission_balance_time-days)-1000*60*60*24*days-1000*60*60*hours)/1000/60);
+    const sec = Math.floor(((mission_balance_time-days)-1000*60*60*24*days-1000*60*60*hours-1000*60*min)/1000);
+
     return (
-      <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}>
         <View style={styles.container_top}>
           <View style={styles.top_header}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')}>
@@ -60,7 +66,7 @@ export default class Relay extends Component {
               <View style={styles.top_mission_timer}>
                 <Image source={require('./src/relay_images/icon_clock.png')}
                   style={styles.top_mission_timer_image} />
-                <Text style={styles.top_mission_timer_T}>59:23:21:{this.props.mystate.mission_balance_time}</Text>
+                <Text style={styles.top_mission_timer_T}>{days}:{hours}:{min}:{sec}</Text>
               </View>
             </View>
             {this.toggle_the_room()}
@@ -151,6 +157,7 @@ export default class Relay extends Component {
               placeholder="방 검색"
               onChangeText={(input_searchRoom) => this.setState({ input_searchRoom })}
               value={this.state.input_searchRoom}
+              onSubmitEditing={()=>{console.log("hi");}}
             />
           </View>
         </View>

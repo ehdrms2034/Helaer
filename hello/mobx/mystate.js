@@ -30,6 +30,11 @@ class mystate{
     set_mission(data){
         this.mission=data;
     }
+    @action
+    set_mission_balance_time(data){
+        this.mission_balance_time=data;
+    
+    }
 
     
 

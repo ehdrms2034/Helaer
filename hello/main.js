@@ -18,13 +18,10 @@ import { BarcodeCamera } from './Component/BarcodeScanner/BarcodeCamera'
 export default class main extends Component {
 
   state={
-    User_id:'',
-    
+    User_id:'',    
     Lv : 0,
     User_Nick: '',
-    
     barcode:false,
-    
   }
 
   navigationToAbout = () => {
@@ -59,6 +56,14 @@ export default class main extends Component {
         res.json().then(
           res=>{
             this.props.mystate.set_mission(res[0]);
+            let date = new Date();
+            let times = date.getTime();
+            let temp = new Date(res[0].end_date);
+            let balance_time = temp.getTime()-times;
+            
+
+            this.props.mystate.set_mission_balance_time(new Date(balance_time));
+            console.log(this.props.mystate.mission_balance_time);
             console.log(this.props.mystate.mission);
           }
         )
