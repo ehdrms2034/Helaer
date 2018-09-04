@@ -16,16 +16,17 @@ export default class LoginPage extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image style={styles.logo} />
+          <View style={styles.logo} />
         </View>
-
 
         <View style={styles.contents}>
           <Text style={styles.contents_title_T}>아이디</Text>
-          <TextInput style={styles.contents_input} />
+          <TextInput style={styles.contents_input}
+            underlineColorAndroid='#ffffffff' />
 
           <Text style={styles.contents_title_T}>비밀번호</Text>
           <TextInput style={styles.contents_input}
+            underlineColorAndroid='#ffffffff'
             secureTextEntry={true} />
 
           <View style={styles.contents_btn_box}>
@@ -40,7 +41,7 @@ export default class LoginPage extends Component<Props> {
             <Text style={styles.button_Login_T}>LOGIN</Text>
           </TouchableOpacity>
           <View style={styles.section}>
-            <Hr color='#707070' width={0.3}>
+            <Hr color='#707070' width={0.5}>
               <Text style={styles.section_T}>OR</Text>
             </Hr>
           </View>
@@ -92,11 +93,10 @@ const styles = StyleSheet.create({
     marginTop: 16
   },
   contents_input: {
-    width: '100%', height: 30,
-    marginBottom: 12,
+    width: '100%', height: 40,
+    marginBottom: 3,
     borderBottomColor: '#707070',
     borderBottomWidth: 0.3,
-
     color: '#707070',
     fontSize: 16.7,
   },
