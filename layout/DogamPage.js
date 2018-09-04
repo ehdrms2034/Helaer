@@ -110,11 +110,15 @@ const styles = StyleSheet.create({
     contents: {
         width: deviceWidth,
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     contents_background: {
-        width: '100%', height: 80,
         position: 'absolute',
-        bottom: 0,
+        top: 230,
+        width: 1000, height: 1000,
+        borderTopLeftRadius: 1000 / 2,
+        borderTopRightRadius: 1000 / 2,
         backgroundColor: '#7740ff',
     },
     contents_arrowL: {

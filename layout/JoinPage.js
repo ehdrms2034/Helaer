@@ -11,7 +11,7 @@ import Hr from 'react-native-hr-plus';
 
 
 type Props = {};
-export default class LoginPage extends Component<Props> {
+export default class JoinPage extends Component<Props> {
     render() {
         return (
             <ScrollView>
@@ -23,6 +23,7 @@ export default class LoginPage extends Component<Props> {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.contents_View}>
+                        <View style={styles.contents_background} />
                         <View style={styles.contents_header}>
                             <Text style={styles.contents_header_T}>회원가입</Text>
                         </View>
@@ -139,14 +140,20 @@ const styles = StyleSheet.create({
     },
 
     contents_View: {
-        width: '100%',
-        backgroundColor: '#7740ff',
+        width: deviceWidth,
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    // TODO:백그라운드 half circle ~!!!
+    contents_background: {
+        position: 'absolute', top: 0,
+        width: 1000, height: '100%',
+        borderTopLeftRadius: 1000 / 2,
+        borderTopRightRadius: 1000 / 2,
+        backgroundColor: '#7740ff',
+    },
     contents_header: {
-        width: '100%',
+        width: deviceWidth,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -167,7 +174,7 @@ const styles = StyleSheet.create({
         marginBottom: 12.8,
     },
     contents_input: {
-        width: '100%', height: 30,
+        width: '100%', height: 40,
         marginBottom: 27,
         borderBottomColor: '#fff',
         borderBottomWidth: 0.3,
