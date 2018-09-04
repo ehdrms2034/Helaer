@@ -21,6 +21,7 @@ class JoinPage extends Component{
         passwd_check: false,
         check : false,
 
+
     }
 
     

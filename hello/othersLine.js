@@ -62,8 +62,6 @@ export default class myLine extends Component {
     }
 }
 
-let deviceWidth = Dimensions.get('window').width;
-
 
 const styles = StyleSheet.create({
     container: {
@@ -107,7 +105,6 @@ const styles = StyleSheet.create({
     },
     top_mission_box: { // 현재 순위권과 area
         marginTop: 23.5,
-        width: deviceWidth - (32.7 * 2), height: 69.3,
         marginLeft: 32.7, marginRight: 32.7,
         padding: 5,
         alignItems: 'center',
@@ -129,7 +126,6 @@ const styles = StyleSheet.create({
     top_mission_title: {
         position: 'absolute',
         top: 8.5,
-        left: deviceWidth / 2 - 101 / 2,
         width: 101, height: 32,
         borderRadius: 16,
         borderColor: '#ad6aef',
@@ -156,8 +152,8 @@ const styles = StyleSheet.create({
         marginRight: 1.1
     },
     top_mission_timer_T: {
-        color: '#ad6aef',
-        fontSize: 10.7,
+        //color: '#ad6aef',
+        //fontSize: 10.7,
     },
 
 

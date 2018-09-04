@@ -108,11 +108,10 @@ const styles = StyleSheet.create({
     },
     intro_box: {
         marginTop: 23.5,
-        width: deviceWidth - (32.7 * 2), height: 69.3,
+        //width: deviceWidth - (32.7 * 2), height: 69.3,
         // marginLeft: 32.7, marginRight: 32.7,
         padding: 5,
         borderColor: '#ad6aef',
-        borderWidth: 2,
         borderRadius: 14,
         alignItems: 'center',
         justifyContent: 'center'

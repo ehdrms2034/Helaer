@@ -15,10 +15,12 @@
     "react-native": "^0.55.4",
     "react-native-camera": "^1.2.0",
     "react-native-elements": "^0.19.1",
+    "react-native-hr-plus": "^1.0.6",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.12.1",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "styled-components": "^3.4.5",
     "yargs-parser": "^10.1.0"
   },
   "devDependencies": {
