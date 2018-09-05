@@ -8,8 +8,8 @@ class myapp{
         room_people_list : []
     }
     @observable relation = [];
-    @observable people_list =[
-    ];
+    @observable people_list =[];
+    @observable mydata =[];
 
 
     @action
@@ -27,6 +27,10 @@ class myapp{
     @action
     set_people_list=(data)=>{
         this.people_list=data;
+    }
+    @action
+    set_mydata=(data)=>{
+        this.mydata=data;
     }
 }
 

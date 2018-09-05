@@ -22,6 +22,7 @@ export default class main extends Component {
     Lv : 0,
     User_Nick: '',
     barcode:false,
+    next_blood:'D-',
   }
 
   navigationToAbout = () => {
@@ -62,7 +63,7 @@ export default class main extends Component {
             let balance_time = temp.getTime()-times;
             
 
-            this.props.mystate.set_mission_balance_time(new Date(balance_time));
+            this.props.mystate.set_mission_balance_time(new Date(balance_time)); //모벡스에 넣음
             console.log(this.props.mystate.mission_balance_time);
             console.log(this.props.mystate.mission);
           }
@@ -72,14 +73,17 @@ export default class main extends Component {
   }
 
   SecondSet=(id)=>{
-    fetch("http://220.230.118.245:3000/user/findOne?user_id="+id)
+    fetch("http://220.230.118.245:3000/user/findOne?user_id="+id) //현재 유저 조회
     .then(res=>{
       res.json()
       .then(user=>{
         this.setState({
           Lv: user.user_level,
           User_Nick : user.user_name
+
         })
+        this.props.mobxStore.set_mydata(user); //mobx에 들어감
+        this.next_blood();
         console.log("2단계:"+id);
         this.thirdSet(id);
       })
@@ -105,7 +109,7 @@ export default class main extends Component {
     });
   }
 
-  fourthSet=(roomid)=>{
+  fourthSet=(roomid)=>{ // 룸아이디 조회
     fetch("http://220.230.118.245:3000/room/findOne?room_name="+roomid)
     .then(res=>{
         res.json()
@@ -122,6 +126,25 @@ export default class main extends Component {
         })
 
     })
+  }
+
+  next_blood=()=>{ // 다음 헌혈 설정하는 거
+    if(this.props.mobxStore.mydata.user_last_blood==null){ //최근헌혈정보가없다
+      this.setState({next_blood: 'Nothing'})
+
+    }
+    else{ //있다
+      let time = new Date(this.props.mobxStore.mydata.user_last_blood);
+      let times = time.getTime();
+      let next_blood = times+1000*60*60*24*30*2; //2달뒤
+      let now = new Date();
+      let now_time = now.getTime();
+      let Ddays = Math.floor((next_blood-now_time)/(1000*60*60*24));
+      let submitdata = "D-"+Ddays;
+      this.setState({next_blood: submitdata});
+      
+    
+    }
   }
 
   componentWillMount(){
@@ -161,7 +184,7 @@ export default class main extends Component {
           <View style={styles.info_dDay}>
             <Text style={styles.info_dDay_T_title}>다음 헌혈까지</Text>
             <View style={styles.info_dDay_T_box}>
-              <Text style={styles.info_dDay_T_count}>D-15</Text>
+              <Text style={styles.info_dDay_T_count}>{this.state.next_blood}</Text>
             </View>
           </View>
         </View>
@@ -175,7 +198,7 @@ export default class main extends Component {
         <View style={styles.bottom}>
           <TouchableOpacity
             style={[styles.button, styles.btn1]}
-            onPress={() => { alert("this is clicked!") }}>
+            onPress={() => {this.props.navigation.navigate("HistoryScreen");}}>
             <Image source={require('./src/main_images/btn1_record.png')}
               style={[styles.image, styles.btn1_image]} />
             <Text style={styles.buttonText}>헌혈기록</Text>

@@ -14,8 +14,8 @@ import OffRelayView from './pages/relay_elements/OffRelayView';
 import OnRelayView from './pages/relay_elements/OnRelayView';
 import { observer, inject } from 'mobx-react';
 
-@inject("mobxStore")
-@inject('mystate')
+
+@inject('mobxStore','mystate')
 @observer
 export default class Relay extends Component {
   constructor(props) {
@@ -33,17 +33,40 @@ export default class Relay extends Component {
     else{ return <OnRelayView />}
   }
 
+  latest_Button=()=>{
+    
+    fetch("http://220.230.118.245:3000/room/findLatest")
+    .then(res=>{
+        res.json().then(data=>{
+          this.props.mystate.set_relayList(data);
+        })
+    })
+  }
+
+  Most_Button=()=>{
+    
+    fetch("http://220.230.118.245:3000/room/findMost")
+    .then(res=>{
+        res.json().then(data=>{
+          this.props.mystate.set_relayList(data);
+        })
+    })
+  }
+
+  searchRoom_method=()=>{
+    fetch("http://220.230.118.245:3000/room/findOne?room_name="+this.state.input_searchRoom)
+    .then(res=>{
+      res.json().then(data=>{
+        if(!data){console.log("존재하지 않는 room_name입니다.");}
+        else{console.log("존재하는 room 입니다.");}
+      })
+    })
+  }
+
   //초기화 작업
 
-
-
   render() {
-    const { navigate } = this.props.navigation;  
-    const {mission_balance_time} = this.props.mystate;
-    const days = Math.floor(mission_balance_time/1000/60/60/24);
-    const hours = Math.floor(((mission_balance_time-days)-1000*60*60*24*days)/1000/60/60);
-    const min = Math.floor(((mission_balance_time-days)-1000*60*60*24*days-1000*60*60*hours)/1000/60);
-    const sec = Math.floor(((mission_balance_time-days)-1000*60*60*24*days-1000*60*60*hours-1000*60*min)/1000);
+
 
     return (
         <ScrollView style={styles.container}>
@@ -66,7 +89,7 @@ export default class Relay extends Component {
               <View style={styles.top_mission_timer}>
                 <Image source={require('./src/relay_images/icon_clock.png')}
                   style={styles.top_mission_timer_image} />
-                <Text style={styles.top_mission_timer_T}>{days}:{hours}:{min}:{sec}</Text>
+                <Text style={styles.top_mission_timer_T}>{this.props.mystate.days}:{this.props.mystate.hours}:{this.props.mystate.min}:{this.props.mystate.sec}</Text>
               </View>
             </View>
             {this.toggle_the_room()}
@@ -131,10 +154,10 @@ export default class Relay extends Component {
             <Text style={styles.contents_title}>LIST</Text>
 
             <View style={styles.contents_index}>
-              <TouchableOpacity style={styles.contents_index_btn}>
+              <TouchableOpacity style={styles.contents_index_btn} onPress={this.latest_Button}>
                 <Text style={styles.contents_index_T}>최신순</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.contents_index_btn}>
+              <TouchableOpacity style={styles.contents_index_btn} onPress={this.Most_Button}>
                 <Text style={styles.contents_index_T}>참여순</Text>
               </TouchableOpacity>
             </View>
@@ -157,7 +180,7 @@ export default class Relay extends Component {
               placeholder="방 검색"
               onChangeText={(input_searchRoom) => this.setState({ input_searchRoom })}
               value={this.state.input_searchRoom}
-              onSubmitEditing={()=>{console.log("hi");}}
+              onSubmitEditing={this.searchRoom_method}
             />
           </View>
         </View>
