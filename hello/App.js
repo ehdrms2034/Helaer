@@ -16,7 +16,8 @@ import main from './main';
 import Barcode from './Component/BarcodeScanner/BarcodeCamera';
 import LoginPage from './LoginPage';
 import JoinPage from './JoinPage';
-
+import DogamPage from './DogamPage';
+import HistoryPage from './HistoryPage';
 
 
 export default class App extends Component {
@@ -36,12 +37,14 @@ export default class App extends Component {
 
 
 const AppNavigator = createStackNavigator({ 
-    
+
     LoginScreen: {screen:LoginPage},
     JoinScreen: {screen: JoinPage},
     HomeScreen: { screen: main },
     RelayScreen: { screen: Relay },
+    HistoryScreen: {screen: HistoryPage},
     BarcodeScreen: {screen : Barcode},
+    DogamScreen: {screen:DogamPage},
     
   },{
     headerMode: "none"

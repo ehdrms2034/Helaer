@@ -8,11 +8,15 @@ import { List, ListItem } from 'react-native-elements'
 
 import { randomUsers } from '../util';
 import Userprofile from './UserProfile';
+import { observer, inject } from 'mobx-react';
 
+
+@inject('mystate')
+@observer
 class RelayList extends Component {
     state = {
         refreshing: false,
-        data: randomUsers(10),
+
     };
 
     /* 
@@ -37,13 +41,30 @@ class RelayList extends Component {
         });
     }
 
+    componentDidMount=()=>{
+        this.props.mystate.set_relayList();
+        console.log(this.props.mystate.relayList);
+    }
+
+    room_min=(date)=>{
+        let temp = new Date(date);
+        let now = new Date();
+        let time = now.getTime() - temp.getTime();
+        return Math.floor(time/1000/60);
+
+        
+        
+    }
+
+
     render() {
         return (
             <List containerStyle={{
                 borderTopWidth: 0, borderBottomWidth: 0
             }}>
                 <FlatList
-                    data={this.state.data}
+                    data={this.props.mystate.relayList}
+                    keyExtractor={item=>item.room_name}
                     initialNumToRender={10}
                     onEndReachedThreshold={1}
                     onEndReached={this.onEndReached}
@@ -57,10 +78,10 @@ class RelayList extends Component {
                                         <View style={styles.item_title_L}>
                                             <Image style={styles.item_title_L_image}
                                                 source={require('./../../src/relay_images/icon_relay.png')} />
-                                            <Text style={styles.item_title_L_T}>조용필 오빠와 함께</Text>
+                                            <Text style={styles.item_title_L_T}>{item.room_name}</Text>
                                         </View>
                                         <View style={styles.item_title_R}>
-                                            <Text style={styles.item_title_R_T_b}>3명</Text>
+                                            <Text style={styles.item_title_R_T_b}>{item.room_people}명</Text>
                                             <Text style={styles.item_title_R_T_r}>과 함께 달리고 있습니다. </Text>
                                         </View>
                                     </View>
@@ -75,7 +96,7 @@ class RelayList extends Component {
                                             <Userprofile />
                                         </View>
                                         <View style={styles.item_summary_R}>
-                                            <Text style={styles.item_summary_R_notiTime_T}>18분 전</Text>
+                                            <Text style={styles.item_summary_R_notiTime_T}>{this.room_min(item.room_date)}분 전</Text>
                                             <TouchableOpacity style={styles.item_summary_R_btn}>
                                                 <Text style={styles.item_summary_R_btn_T}>상세보기</Text>
                                                 <Image style={styles.item_summary_R_btn_image}
