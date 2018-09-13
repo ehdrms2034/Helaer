@@ -7,15 +7,22 @@ import {
   AppRegistry
 } from 'react-native';
 
+import CircularProgress from './CircularProgress';
+
+
 export default class main extends Component {
 
   render() {
+    // FIXME:퍼센트로 바꿔야함!현재는 그냥 값...
+    let expPercent = 87;
+
+    let dDay = 18;
+
     return (
       <View style={styles.container}>
 
         {/* header - info */}
         <View style={styles.info}>
-          {/* FIXME: 세로 정렬 맞추기  */}
           <View style={styles.info_me}>
             <View style={styles.info_me_Lv}>
               <Image source={require('./src/main_images/icon_lv.png')}
@@ -28,7 +35,10 @@ export default class main extends Component {
             </View>
             <View style={styles.info_me_Exp}>
               <Text style={styles.info_me_Exp_T_Exp}>EXP</Text>
-              <View style={styles.info_me_Exp_box}></View>
+              <View style={styles.info_me_Exp_box}>
+                <View style={[styles.info_me_Exp_box_bar, { width: expPercent }]} />
+                <Text style={styles.info_me_Exp_box_T}>{expPercent}%</Text>
+              </View>
             </View>
             <View style={styles.info_me_Spot}>
               <Image source={require('./src/main_images/icon_spot.png')}
@@ -40,7 +50,8 @@ export default class main extends Component {
           <View style={styles.info_dDay}>
             <Text style={styles.info_dDay_T_title}>다음 헌혈까지</Text>
             <View style={styles.info_dDay_T_box}>
-              <Text style={styles.info_dDay_T_count}>D-15</Text>
+              {/* 디데이 퍼센트 = (헌혈날짜 - 현재날짜)/ 30(전혈) * 100 */}
+              <CircularProgress percent={dDay / 30 * 100} dDay={dDay} />
             </View>
           </View>
         </View>
@@ -55,6 +66,16 @@ export default class main extends Component {
             <Image style={styles.main_image}
               source={require('./src/main_images/robot.png')} />
           </View>
+        </View>
+
+        {/* blood info */}
+        <View style={styles.infoBubble}>
+          <Image style={styles.infoBubble_top} source={require('./src/main_images/deco_bubble_top.png')} />
+          <Text style={styles.infoBubble_T}>
+            헌혈을 많이 하면 혈관이 좁아진다구?!{'\n'}
+            노우, 스튜핏!! 바늘이 들어오면 순간적으로 수축하긴 해.{'\n'}
+            근데 바로 회복되니까 슈퍼그뤠잇!</Text>
+          <Image style={styles.infoBubble_bottom} source={require('./src/main_images/deco_bubble_bottom.png')} />
         </View>
 
         {/* bottom - buttons */}
@@ -107,6 +128,8 @@ const styles = StyleSheet.create({
   info_me_Lv: {
     height: 28,
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     marginBottom: 5.3
   },
   info_me_Lv_image: {
@@ -147,7 +170,7 @@ const styles = StyleSheet.create({
   info_me_Exp: {
     height: 10.3,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'flex-start',
     marginBottom: 9.5
   },
@@ -165,10 +188,43 @@ const styles = StyleSheet.create({
   },
   info_me_Exp_box: {
     width: 116.8,
-    height: 7.1,
-    backgroundColor: '#ffe3dd'
+    height: 8,
+    backgroundColor: '#ffe3dd',
+    borderRadius: 8 / 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: {
+      width: 1.5,
+      height: 1.5
+    },
+    shadowRadius: 1.5,
+    elevation: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
+  info_me_Exp_box_bar: {
+    height: '100%',
+    position: 'absolute',
+    top: 0, left: 0,
+    borderRadius: 8 / 2,
+    backgroundColor: '#ad6aef'
+  },
+  info_me_Exp_box_T: {
+    fontSize: 7,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    lineHeight: 8,
+    letterSpacing: 0,
+    textAlign: "left",
+    color: '#000',
+    textShadowColor: 'rgba(0, 0, 0, 0.16)',
+    textShadowOffset: {
+      width: 0,
+      height: 1
+    },
+    textShadowRadius: 2
 
+  },
   // 사용자 정보 섹션 - 3
   info_me_Spot: {
     height: 17.7,
@@ -201,6 +257,7 @@ const styles = StyleSheet.create({
     right: 30, top: 30, width: 90, height: '100%',
     alignItems: 'center'
   },
+
   info_dDay_T_title: {
     textAlign: 'center',
     color: '#000',
@@ -209,23 +266,13 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     lineHeight: 13.7,
     letterSpacing: 0,
-    textAlign: "center",
 
   },
-  info_dDay_T_count: {
-    color: '#000',
-    fontSize: 21,
-    fontWeight: "600",
-    fontStyle: "normal",
-    lineHeight: 24.7,
-    letterSpacing: 0,
-    textAlign: "left",
-    textShadowColor: "rgba(0, 0, 0, 0.16)",
-    textShadowOffset: {
-      width: 0,
-      height: 1
-    },
-    textShadowRadius: 2
+  info_dDay_T_box: {
+    width: 56.7, height: 56.7,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10.3
   },
 
   // 캐릭터
@@ -253,19 +300,50 @@ const styles = StyleSheet.create({
   main_frame: {
     width: 199.3,
     height: 349.3,
-    borderWidth: 10,
-    borderColor: '#ccc',
-    borderRadius: 199.3 / 2
+    borderWidth: 5,
+    borderColor: '#eee',
+    borderRadius: 199.3 / 2,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   main_image: {
-    width: '100%',
-    height: '100%',
+    width: 137.7,
+    height: 203.3,
     resizeMode: 'contain',
-    borderRadius: 199.3 / 2
+    marginBottom: 30.7
   },
+
+  //  말풍선
+  infoBubble: {
+    position: 'absolute',
+    top: 130, left: 37,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  infoBubble_top: {
+    width: 235.9,
+    height: 36.3,
+    resizeMode: 'contain'
+  },
+  infoBubble_T: {
+    fontSize: 12,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    lineHeight: 14.7,
+    letterSpacing: 0,
+    textAlign: "center",
+    color: "#707070"
+  },
+  infoBubble_bottom: {
+    width: 240.6,
+    height: 42.3,
+    resizeMode: 'contain'
+  },
+
+
   // 버튼
   bottom: {
-    height: 147.3,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -275,7 +353,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    flex: 1,
     resizeMode: 'contain',
   },
   buttonText: {
