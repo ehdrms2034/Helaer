@@ -25,15 +25,33 @@ export default class DogamPage extends Component<Props> {
                     <View style={styles.contents_background}>
                         <Image />
                     </View>
+
+                    <View style={styles.main_pre}>
+                        <TouchableOpacity style={styles.main_pre_item}>
+                            {/* FIXME: 여기 이전 캐릭터~! */}
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.main_next}>
+                        <TouchableOpacity style={styles.main_next_item}>
+                            {/* FIXME: 여기 다음 캐릭터~! */}
+                        </TouchableOpacity>
+                    </View>
+
+
                     <View style={styles.contents_arrowL}>
                         <TouchableOpacity style={styles.contents_arrow_btn}>
                             <Image style={styles.contents_arrow_image}
                                 source={require('./src/dogam_images/icon_L_arrow.png')} />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.contents_main}>
-                        <Text>캐릭터</Text>
+
+
+                    <View style={styles.main_frame}>
+                        <Image style={styles.main_image}
+                            source={require('./src/main_images/robot.png')} />
                     </View>
+
                     <View style={styles.contents_arrowR}>
                         <TouchableOpacity style={styles.contents_arrow_btn}>
                             <Image style={styles.contents_arrow_image}
@@ -121,6 +139,26 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 1000 / 2,
         backgroundColor: '#7740ff',
     },
+    main_pre: {
+        position: 'absolute',
+        width: 225, height: 211.7,
+        left: -200,
+        borderRadius: 10,
+        backgroundColor: "rgba(112, 112, 112, 0.55)"
+    },
+    main_pre_item: {
+        width: '100%', height: '100%'
+    },
+    main_next: {
+        position: 'absolute',
+        width: 225, height: 211.7,
+        right: -200,
+        borderRadius: 10,
+        backgroundColor: "rgba(112, 112, 112, 0.55)"
+    },
+    main_next_item: {
+        width: '100%', height: '100%'
+    },
     contents_arrowL: {
         width: (deviceWidth - 184.5) / 2, height: '100%',
         justifyContent: 'center',
@@ -140,14 +178,22 @@ const styles = StyleSheet.create({
         width: '100%', height: '100%',
         resizeMode: 'contain',
     },
-    contents_main: {
-        width: 184.5, height: 323.3,
-        borderRadius: 184.5 / 2,
-        borderWidth: 4,
-        borderColor: '#fff',
-        backgroundColor: '#521',
+
+    main_frame: {
+        width: 199.3,
+        height: 349.3,
+        borderWidth: 5,
+        borderColor: '#eee',
+        borderRadius: 199.3 / 2,
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#fff'
+    },
+    main_image: {
+        width: 137.7,
+        height: 203.3,
+        resizeMode: 'contain',
+        marginBottom: 30.7
     },
 
     // 하단 설명
@@ -166,18 +212,24 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#fff',
         borderWidth: 4,
-        marginTop: 18.6 / 2 + 6.8,
+        marginTop: 18.6 / 2 + 6.8 * 2,
         padding: 20,
         paddingBottom: 30,
     },
     bottom_T_title: {
         color: '#fff',
         fontSize: 14.3,
-        marginTop: 12.6
+        marginTop: 12.6 + 6.8
     },
     bottom_T: {
         color: '#fff',
         fontSize: 13.7,
+        fontWeight: "normal",
+        fontStyle: "normal",
+        lineHeight: 17.3,
+        letterSpacing: -0.33,
+        textAlign: "center",
+        color: "#ffffff",
         marginTop: 12.6
     },
     // FIXME: 이미지 업데이트! 사이즈가 다름~!
@@ -208,7 +260,7 @@ const styles = StyleSheet.create({
     //타이틀
     bottom_title_box: {
         position: 'absolute',
-        top: 0,
+        top: 6.8,
         width: 169.8 + 6.8, height: 31.1 + 6.8,
         marginLeft: (deviceWidth - (169.8 + 6.8)) / 2, marginRight: (deviceWidth - (169.8 + 6.8)) / 2,
         padding: 6.8,
