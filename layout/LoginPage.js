@@ -16,7 +16,10 @@ export default class LoginPage extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={styles.logo} />
+          <View style={styles.logo}>
+            <Image source={require('./src/logo.png')}
+              style={styles.logo_image} />
+          </View>
         </View>
 
         <View style={styles.contents}>
@@ -75,9 +78,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 91.2, height: 91.2,
+    width: 120, height: 120,
     marginTop: 46.6, marginBottom: 52.7,
-    backgroundColor: '#254'
+    borderRadius: 60,
+    backgroundColor: "#ffffff",
+    margin: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowOffset: {
+      width: 1.5,
+      height: 1.5
+    },
+    shadowRadius: 10,
+    elevation: 2
+
+  },
+  logo_image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain'
   },
 
   // 아이디, 비밀번호 입력창
