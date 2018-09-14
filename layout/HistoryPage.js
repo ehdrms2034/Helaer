@@ -301,7 +301,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    contents_header: {},
+    contents_header: {
+        marginBottom: 18
+    },
     contents_header_image: {
         width: 166,
         height: 44.1,
